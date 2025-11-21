@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-
+import { cn } from "@/lib/utils";
 import AnimatedCard from "./AnimatedCard";
+import MagnetLines from "./MagnetLines";
 
 const STEPS = [
   {
@@ -33,69 +34,87 @@ const STEPS = [
 
 export default function StickyJourney() {
   return (
-    <section id="journey" className="relative py-16 sm:py-24">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-slate-800/0 via-slate-500/40 to-slate-800/0" />
-
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 sm:px-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)] lg:px-12">
+    <section id="journey" className="relative py-32">
+      <div className="mx-auto grid w-full max-w-6xl gap-16 px-6 sm:px-8 lg:grid-cols-[1fr_1fr] lg:px-12">
+        
+        {/* Sticky Left Column */}
         <motion.div
-          className="relative flex items-center justify-center lg:sticky lg:top-32"
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
+          className="relative hidden lg:flex items-start h-fit sticky top-32"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <motion.div
-            className="relative w-full max-w-md rounded-3xl border border-cyan-400/40 bg-slate-950/70 p-5 text-sm text-slate-100 shadow-[0_26px_110px_rgba(8,47,73,0.95)] backdrop-blur-2xl"
-            animate={{
-              rotateX: [0, 5, 0],
-              rotateY: [0, -6, 0],
-              y: [0, -6, 0],
-            }}
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <div className="mb-4 flex items-center justify-between text-[0.72rem] text-cyan-100">
-              <span className="inline-flex items-center gap-2">
-                <span className="inline-flex h-1.5 w-8 overflow-hidden rounded-full bg-slate-800">
-                  <span className="inline-flex w-1/2 animate-pulse bg-linear-to-r from-cyan-400 via-sky-400 to-fuchsia-500" />
-                </span>
-                Live learning journey
-              </span>
-              <span className="rounded-full bg-slate-900/80 px-2 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-cyan-100/90">
-                Student mode
-              </span>
-            </div>
+          <div className="absolute inset-0 -z-10 translate-x-10 scale-150 opacity-30">
+             <MagnetLines 
+               rows={9} 
+               cols={9} 
+               lineColor="rgba(56, 189, 248, 0.1)" 
+               lineWidth="2px"
+               lineHeight="20px"
+               baseAngle={0}
+             />
+          </div>
 
-            <p className="text-[0.8rem] leading-relaxed text-slate-100">
-              This entire page is a sandbox for the tools you&apos;re about to learn:
-              React, Framer Motion, Tailwind, shadcn/ui, and more.
-            </p>
-            <p className="mt-3 text-[0.78rem] leading-relaxed text-slate-300/90">
-              Scroll on the right and watch how the story steps sync with this
-              interactive cardjust like a scrollytelling article.
-            </p>
-          </motion.div>
+          <AnimatedCard className="w-full bg-slate-900/80 p-8 border-cyan-500/30 backdrop-blur-xl">
+            <div className="flex flex-col gap-6">
+               <div className="flex items-center justify-between">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-medium text-cyan-300 uppercase tracking-widest">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                    Live Learning
+                  </div>
+                  <span className="text-xs text-slate-500 font-mono">01 / 04</span>
+               </div>
+               
+               <h3 className="text-3xl font-bold text-white leading-tight">
+                 From Observer <br/> to Creator
+               </h3>
+               
+               <p className="text-slate-400 leading-relaxed">
+                 This page isn't just a demo; it's a roadmap. Scroll through the timeline to see how you go from "watching" to "building" interactive experiences like this one.
+               </p>
+            </div>
+          </AnimatedCard>
         </motion.div>
 
-        <div className="space-y-4">
+        {/* Scrollable Timeline Right Column */}
+        <div className="relative space-y-12 pl-8 lg:pl-0">
+          {/* Timeline Line */}
+          <div className="absolute left-0 top-4 bottom-4 w-px bg-slate-800 lg:hidden" />
+
           {STEPS.map((step, index) => (
-            <AnimatedCard key={step.label}>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/80 text-[0.75rem] font-semibold text-slate-100">
-                  {index + 1}
+            <motion.div
+              key={step.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative"
+            >
+              {/* Mobile Timeline Dot */}
+              <span className="absolute -left-[36px] top-6 h-3 w-3 rounded-full border-2 border-slate-900 bg-slate-600 lg:hidden" />
+
+              <AnimatedCard className="p-6 hover:border-cyan-500/30 transition-colors">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-800 text-xs font-bold text-white border border-white/10">
+                      0{index + 1}
+                    </div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500">
+                      {step.label}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-white mb-2">
+                      {step.title}
+                    </h4>
+                    <p className="text-sm text-slate-400 leading-relaxed">
+                      {step.body}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    {step.label}
-                  </p>
-                  <h3 className="mt-1 text-[0.95rem] font-semibold text-slate-50 sm:text-base">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-[0.8rem] leading-relaxed text-slate-300/90">
-                    {step.body}
-                  </p>
-                </div>
-              </div>
-            </AnimatedCard>
+              </AnimatedCard>
+            </motion.div>
           ))}
         </div>
       </div>

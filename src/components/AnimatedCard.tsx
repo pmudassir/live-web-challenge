@@ -1,57 +1,58 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface AnimatedCardProps {
   children: ReactNode;
   className?: string;
+  spotlightColor?: string;
 }
 
-export default function AnimatedCard({ children, className }: AnimatedCardProps) {
-  const tiltX = useMotionValue(0);
-  const tiltY = useMotionValue(0);
+export default function AnimatedCard({
+  children,
+  className,
+  spotlightColor = "rgba(56, 189, 248, 0.25)",
+}: AnimatedCardProps) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const rotateX = useTransform(tiltY, [-0.6, 0.6], [10, -10]);
-  const rotateY = useTransform(tiltX, [-0.6, 0.6], [-10, 10]);
-
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left - rect.width / 2;
-    const y = event.clientY - rect.top - rect.height / 2;
-
-    const ratioX = x / rect.width;
-    const ratioY = y / rect.height;
-
-    tiltX.set(ratioX * 0.8);
-    tiltY.set(ratioY * 0.8);
-  };
-
-  const handlePointerLeave = () => {
-    tiltX.set(0);
-    tiltY.set(0);
-  };
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
-    <motion.div
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.98, y: 0 }}
-      transition={{ type: "spring", stiffness: 220, damping: 20, mass: 0.8 }}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
+    <div
+      onMouseMove={handleMouseMove}
       className={cn(
-        "group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60 p-4 text-sm text-slate-100 shadow-[0_18px_70px_rgba(15,23,42,0.9)] backdrop-blur-2xl",
-        className,
+        "group relative rounded-3xl bg-slate-950/40 border border-white/10 overflow-hidden",
+        "backdrop-blur-md transition-colors duration-500 hover:border-white/20",
+        className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(236,72,153,0.18),transparent_60%)]" />
+      {/* Spotlight Gradient Overlay */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              ${spotlightColor},
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      
+      <div className="relative h-full p-4 sm:p-5">
+        {children}
       </div>
-      <div className="relative z-10">{children}</div>
-    </motion.div>
+
+      {/* Noise Texture */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay bg-noise" />
+    </div>
   );
 }

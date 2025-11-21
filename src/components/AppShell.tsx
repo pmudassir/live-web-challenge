@@ -8,6 +8,7 @@ import TopNav from "./TopNav";
 import CursorGlow from "./CursorGlow";
 import IntroOverlay from "./IntroOverlay";
 import SectionRail from "./SectionRail";
+import EnergyBeam from "./EnergyBeam";
 
 interface AppShellProps {
   children: ReactNode;
@@ -21,6 +22,7 @@ export default function AppShell({ children }: AppShellProps) {
       <CursorGlow />
       <IntroOverlay />
       <SectionRail />
+      <EnergyBeam />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.16),transparent_55%),radial-gradient(circle_at_bottom,rgba(244,114,182,0.16),transparent_55%)]" />
       <motion.div
         aria-hidden

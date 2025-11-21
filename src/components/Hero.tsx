@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { ArrowDown, Bot, Cpu, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, Bot, Cpu, Sparkles } from "lucide-react";
 import AnimatedWords from "./AnimatedWords";
+import AnimatedCard from "./AnimatedCard";
+import StarField from "./StarField";
+import DecryptedText from "./DecryptedText";
 
 const phrases = [
   "AI & Machine Learning",
@@ -20,278 +22,183 @@ export default function Hero() {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
 
-  const cursorXSpring = useSpring(cursorX, {
-    stiffness: 120,
-    damping: 18,
-    mass: 0.3,
-  });
-  const cursorYSpring = useSpring(cursorY, {
-    stiffness: 120,
-    damping: 18,
-    mass: 0.3,
-  });
+  const cursorXSpring = useSpring(cursorX, { stiffness: 120, damping: 18, mass: 0.3 });
+  const cursorYSpring = useSpring(cursorY, { stiffness: 120, damping: 18, mass: 0.3 });
 
   useEffect(() => {
     const phrase = phrases[index];
     let frame = 0;
-
     const interval = setInterval(() => {
       frame += 1;
       setDisplayText(phrase.slice(0, frame));
-
       if (frame >= phrase.length) {
         clearInterval(interval);
         const timeout = setTimeout(() => {
           setIndex((prev) => (prev + 1) % phrases.length);
           setDisplayText("");
         }, 1500);
-
         return () => clearTimeout(timeout);
       }
     }, 60);
-
     return () => clearInterval(interval);
   }, [index]);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const { left, top } = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - left;
-    const y = event.clientY - top;
-
-    cursorX.set(x);
-    cursorY.set(y);
+    cursorX.set(event.clientX - left);
+    cursorY.set(event.clientY - top);
   };
 
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20 sm:px-8 lg:px-12"
+      className="relative flex min-h-[110vh] items-center justify-center overflow-hidden px-6 pt-32 pb-20 sm:px-8 lg:px-12"
       onPointerMove={handlePointerMove}
     >
+      <StarField speed={0.4} starColor="#e2e8f0" />
+
+      {/* Ambient Hero Glow - Reduced opacity for StarField visibility */}
       <motion.div
-        className="pointer-events-none absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.35),transparent_60%)] blur-3xl mix-blend-screen"
+        className="pointer-events-none absolute h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.1),transparent_60%)] blur-[120px] mix-blend-screen"
         style={{ x: cursorXSpring, y: cursorYSpring }}
       />
 
-      <motion.div
-        className="pointer-events-none absolute -top-40 right-10 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(244,114,182,0.3),transparent_60%)] blur-3xl"
-        animate={{ y: [0, -24, 0], x: [0, 16, 0] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <motion.div
-        className="pointer-events-none absolute -bottom-40 left-0 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(129,140,248,0.3),transparent_60%)] blur-3xl"
-        animate={{ y: [0, 20, 0], x: [0, -24, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-12 lg:flex-row lg:items-center">
-        <div className="flex-1 space-y-8">
+      <div className="relative z-10 grid w-full max-w-7xl gap-16 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+        
+        {/* Typography Column */}
+        <div className="space-y-10">
           <motion.div
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-cyan-100 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/40 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-cyan-200 backdrop-blur-md"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
-            Future Tech Explorer
+            <DecryptedText text="Future Tech Explorer" speed={60} />
           </motion.div>
 
           <motion.h1
-            className="text-balance text-4xl font-semibold leading-tight tracking-tight text-slate-50 sm:text-5xl md:text-6xl lg:text-7xl"
+            className="text-balance text-6xl font-bold leading-[0.9] tracking-tighter text-slate-50 sm:text-7xl md:text-8xl lg:text-[5.5rem]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-slate-300">Discover what&apos;s</span>
-            <span className="mt-1 block bg-linear-to-r from-cyan-300 via-sky-400 to-fuchsia-500 bg-clip-text text-transparent">
-              <AnimatedWords text="possible with technology." />
+            <span className="block text-slate-400/80">Discover what&apos;s</span>
+            <span className="mt-2 block bg-linear-to-r from-white via-cyan-100 to-slate-400 bg-clip-text text-transparent">
+              <AnimatedWords text="possible." />
             </span>
           </motion.h1>
 
-          <motion.p
-            className="max-w-xl text-pretty text-sm text-slate-300/80 sm:text-base"
+          <motion.div
+            className="max-w-lg space-y-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            Explore mind-bending experiences in AI, robotics, data science, and
-            beyondbuilt to spark curiosity and show what you can create next.
-          </motion.p>
+             <p className="text-lg leading-relaxed text-slate-400">
+               A cinematic journey through AI, robotics, and data.
+               Explore mind-bending experiences built to spark your curiosity.
+             </p>
 
-          <motion.div
-            className="flex items-center gap-2 text-sm text-cyan-100/90"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="text-[0.7rem] uppercase tracking-[0.22em] text-cyan-300/90">
-              Now exploring
-            </span>
-            <span className="h-px w-8 bg-cyan-400/70" />
-            <span className="inline-flex items-center text-sm font-medium text-cyan-50">
-              {displayText}
-              <span className="ml-[3px] inline-block h-4 w-[2px] animate-pulse rounded-full bg-cyan-300" />
-            </span>
+             <div className="flex items-center gap-2 text-sm text-cyan-100/90">
+               <span className="text-[0.7rem] uppercase tracking-[0.22em] text-cyan-300/90">
+                 Loading
+               </span>
+               <span className="h-px w-8 bg-cyan-400/70" />
+               <span className="inline-flex items-center text-sm font-medium text-cyan-50">
+                 <DecryptedText text={displayText} speed={40} animateOn="view" />
+                 <span className="ml-[3px] inline-block h-4 w-[2px] animate-pulse rounded-full bg-cyan-300" />
+               </span>
+             </div>
           </motion.div>
 
           <motion.div
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center gap-5"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={{ scale: 0.97, y: 0 }}
-              className={cn(
-                "group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-medium text-slate-950",
-                "bg-linear-to-r from-cyan-300 via-sky-400 to-fuchsia-500 shadow-[0_18px_60px_rgba(6,182,212,0.55)]"
-              )}
-            >
-              <span className="relative z-10">Start exploring</span>
-              <span className="relative z-10 inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900/10 text-slate-950">
-                <Cpu className="h-3.5 w-3.5" />
-              </span>
-              <motion.span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(248,250,252,0.5),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={{ scale: 0.97, y: 0 }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-slate-900/40 px-5 py-2.5 text-sm font-medium text-slate-100 backdrop-blur-xl"
-            >
-              <span>How it works</span>
-              <Bot className="h-4 w-4 text-cyan-300" />
-            </motion.button>
-          </motion.div>
-
-          <motion.div
-            className="mt-4 flex items-center gap-3 text-xs text-slate-400 sm:text-sm"
-            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="inline-flex h-7 items-center rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 text-[0.7rem] uppercase tracking-[0.18em] text-emerald-300">
-              Live playground
-            </span>
-            <span className="h-px w-10 bg-linear-to-r from-slate-500/60 via-slate-400/80 to-transparent" />
-            <span>Scroll to unlock interactive stories in every tech field.</span>
+            <button className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-white px-8 font-medium tracking-wide text-slate-950 transition-transform duration-300 hover:scale-[1.02] active:scale-95">
+               <span className="relative z-10 flex items-center gap-2">
+                 <DecryptedText text="Start Exploring" speed={80} animateOn="hover" className="text-slate-950 font-bold" />
+                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+               </span>
+               <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-cyan-200 via-white to-white opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </button>
+
+            <button className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/10 bg-slate-900/40 px-8 font-medium text-slate-200 backdrop-blur-xl transition-colors hover:bg-white/5">
+              <Bot className="h-4 w-4 text-cyan-300" />
+              How it works
+            </button>
           </motion.div>
         </div>
 
+        {/* 3D Visual Column */}
         <motion.div
-          className="relative mt-6 flex flex-1 justify-center lg:mt-0"
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative hidden lg:block"
+          initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{ perspective: "2000px" }}
         >
-          <motion.div
-            className="relative w-full max-w-md rounded-3xl border border-white/10 bg-slate-950/50 p-5 shadow-[0_24px_100px_rgba(15,23,42,0.95)] backdrop-blur-2xl"
-            whileHover={{ rotateX: 6, rotateY: -6, y: -4 }}
-            transition={{ type: "spring", stiffness: 120, damping: 16, mass: 0.9 }}
-          >
-            <div className="mb-4 flex items-center justify-between text-xs text-slate-400">
-              <span className="inline-flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Real-time simulation
-              </span>
-              <span className="rounded-full bg-slate-900/60 px-2 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-slate-300">
-                60fps animations
-              </span>
-            </div>
+           <AnimatedCard className="min-h-[450px] w-full origin-center bg-slate-900/60 p-8">
+              <div className="flex h-full flex-col justify-between">
+                 <div>
+                    <div className="flex items-center justify-between">
+                       <span className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-400">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          System Online
+                       </span>
+                       <Cpu className="h-5 w-5 text-slate-500" />
+                    </div>
+                    <h3 className="mt-6 text-3xl font-light leading-tight text-white">
+                      Neural<br />Architecture
+                    </h3>
+                 </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs text-slate-100 sm:text-sm">
-              <motion.div
-                className="rounded-2xl border border-cyan-400/40 bg-linear-to-br from-cyan-400/20 via-sky-500/10 to-slate-900/80 p-3 shadow-[0_16px_45px_rgba(8,47,73,0.85)]"
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.7 }}
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-cyan-100">
-                    <Cpu className="h-3 w-3" />
-                    AI Labs
-                  </span>
-                  <span className="text-[0.65rem] text-cyan-100/80">Live</span>
-                </div>
-                <p className="text-[0.72rem] leading-relaxed text-cyan-50/90">
-                  Visualize neural nets, generative art, and intelligent systems
-                  in motion.
-                </p>
-              </motion.div>
+                 <div className="space-y-4">
+                    <div className="rounded-xl bg-white/5 p-4 backdrop-blur-md">
+                       <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
+                          <span>Processing</span>
+                          <span>98%</span>
+                       </div>
+                       <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                          <div className="h-full w-[98%] rounded-full bg-cyan-400" />
+                       </div>
+                    </div>
 
-              <motion.div
-                className="rounded-2xl border border-fuchsia-400/40 bg-linear-to-br from-fuchsia-500/20 via-rose-500/10 to-slate-900/80 p-3 shadow-[0_16px_45px_rgba(80,7,36,0.85)]"
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.7 }}
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-fuchsia-100">
-                    <Bot className="h-3 w-3" />
-                    Robotics
-                  </span>
-                  <span className="text-[0.65rem] text-fuchsia-100/80">Autonomy</span>
-                </div>
-                <p className="text-[0.72rem] leading-relaxed text-fuchsia-50/90">
-                  Watch robots coordinate, adapt, and learn in beautifully
-                  choreographed scenes.
-                </p>
-              </motion.div>
+                    <div className="grid grid-cols-2 gap-4">
+                       <div className="rounded-xl border border-white/5 bg-white/5 p-4 backdrop-blur-md">
+                          <div className="text-xs text-slate-500">Nodes</div>
+                          <div className="mt-1 text-xl font-medium text-white">4.2k</div>
+                       </div>
+                       <div className="rounded-xl border border-white/5 bg-white/5 p-4 backdrop-blur-md">
+                          <div className="text-xs text-slate-500">Latency</div>
+                          <div className="mt-1 text-xl font-medium text-white">12ms</div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </AnimatedCard>
 
-              <motion.div
-                className="col-span-2 mt-1 rounded-2xl border border-slate-500/40 bg-linear-to-r from-slate-900/90 via-slate-900/60 to-slate-900/90 p-3 text-[0.72rem] text-slate-200 shadow-[0_18px_60px_rgba(15,23,42,0.9)]"
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 160, damping: 18, mass: 0.8 }}
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-slate-200">
-                    <span className="flex items-center gap-1">
-                      <span className="inline-flex h-1.5 w-8 overflow-hidden rounded-full bg-slate-700/80">
-                        <span className="inline-flex w-1/2 animate-pulse bg-linear-to-r from-cyan-400 via-sky-400 to-fuchsia-500" />
-                      </span>
-                      Simulation stream
-                    </span>
-                  </span>
-                  <span className="text-[0.65rem] text-slate-400">AI, Data, Robotics, Web</span>
-                </div>
-                <p className="text-[0.72rem] leading-relaxed text-slate-300">
-                  Every scroll unlocks a new interactive storyfrom predicting
-                  the future with data to orchestrating swarms of intelligent
-                  machines.
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
+           {/* Floating Elements */}
+           <motion.div 
+             className="absolute -right-12 top-24 w-48 rounded-2xl border border-white/10 bg-slate-900/80 p-4 backdrop-blur-xl"
+             animate={{ y: [0, -15, 0] }}
+             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+           >
+              <div className="flex items-center gap-3">
+                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500/20">
+                    <Bot className="h-5 w-5 text-cyan-300" />
+                 </div>
+                 <div>
+                    <div className="text-xs font-medium text-white">AI Agent</div>
+                    <div className="text-[10px] text-cyan-300">Active</div>
+                 </div>
+              </div>
+           </motion.div>
         </motion.div>
       </div>
-
-      <motion.div
-        className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-xs text-slate-400"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-[0.7rem] uppercase tracking-[0.26em] text-slate-500">
-            Scroll to explore
-          </span>
-          <motion.div
-            className="flex h-9 w-5 items-center justify-center rounded-full border border-slate-500/50 bg-slate-950/60 p-1 backdrop-blur-xl"
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <motion.span
-              className="inline-flex h-2 w-2 items-center justify-center rounded-full bg-slate-200"
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
-          <ArrowDown className="h-3 w-3 text-slate-500" />
-        </div>
-      </motion.div>
     </section>
   );
 }
