@@ -19,9 +19,9 @@ export default function InfiniteScroll({
   itemClassName,
 }: InfiniteScrollProps) {
   return (
-    <div className={cn("relative flex overflow-hidden bg-slate-950 py-8", className)}>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10" />
+    <div className={cn("relative flex overflow-hidden bg-[#030303] py-8", className)}>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-linear-to-r from-[#030303] to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-linear-to-l from-[#030303] to-transparent z-10" />
       
       <motion.div
         className="flex min-w-full shrink-0 gap-16 px-8"
@@ -38,7 +38,7 @@ export default function InfiniteScroll({
           <span
             key={idx}
             className={cn(
-              "whitespace-nowrap text-2xl font-bold uppercase tracking-widest text-slate-700",
+              "whitespace-nowrap text-2xl font-bold uppercase tracking-widest text-white/20",
               itemClassName
             )}
           >
@@ -63,7 +63,7 @@ export default function InfiniteScroll({
           <span
             key={idx}
             className={cn(
-              "whitespace-nowrap text-2xl font-bold uppercase tracking-widest text-slate-700",
+              "whitespace-nowrap text-2xl font-bold uppercase tracking-widest text-white/20",
               itemClassName
             )}
           >

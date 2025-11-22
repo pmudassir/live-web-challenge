@@ -5,27 +5,13 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import type { TechSectionConfig } from "@/types";
-import AnimatedCard from "./AnimatedCard";
 import TiltedCard from "./TiltedCard";
 import FactCard from "./FactCard";
 import SplitText from "./SplitText";
-import ParallaxElement from "./ParallaxElement";
 
 interface TechSectionProps {
   config: TechSectionConfig;
   index: number;
-}
-
-function getSectionColor(id: string) {
-  switch (id) {
-    case "ai": return "rgba(56, 189, 248, 0.4)"; // Cyan
-    case "data": return "rgba(99, 102, 241, 0.4)"; // Indigo
-    case "robotics": return "rgba(245, 158, 11, 0.4)"; // Amber
-    case "mobile": return "rgba(16, 185, 129, 0.4)"; // Emerald
-    case "web": return "rgba(236, 72, 153, 0.4)"; // Pink
-    case "emerging": return "rgba(139, 92, 246, 0.4)"; // Violet
-    default: return "rgba(255, 255, 255, 0.2)";
-  }
 }
 
 export default function TechSection({ config, index }: TechSectionProps) {
@@ -45,7 +31,6 @@ export default function TechSection({ config, index }: TechSectionProps) {
 
   const Icon = config.icon;
   const reversed = index % 2 === 1;
-  const spotlightColor = getSectionColor(config.id);
 
   return (
     <section 
@@ -56,7 +41,7 @@ export default function TechSection({ config, index }: TechSectionProps) {
       {/* Abstract Background Glow */}
       <div className={cn(
         "absolute inset-0 opacity-20 pointer-events-none",
-        reversed ? "bg-gradient-to-bl" : "bg-gradient-to-br",
+        reversed ? "bg-linear-to-bl" : "bg-linear-to-br",
         "from-slate-900 via-slate-950 to-slate-950"
       )}>
          <div className={cn(
@@ -79,12 +64,12 @@ export default function TechSection({ config, index }: TechSectionProps) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="flex items-baseline gap-4">
-            <span className="text-6xl md:text-8xl font-bold text-white/5 tracking-tighter select-none">
+            <span className="text-6xl md:text-8xl font-bold text-white/10 tracking-tighter select-none">
               0{index + 1}
             </span>
             <div className={cn(
-              "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] backdrop-blur-md",
-              "text-slate-300"
+              "inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] backdrop-blur-md",
+              "text-white/60"
             )}>
               <Icon className="h-3.5 w-3.5" />
               {config.label}
@@ -98,17 +83,17 @@ export default function TechSection({ config, index }: TechSectionProps) {
           <div className="max-w-lg">
             <SplitText 
               text={config.description} 
-              className="text-lg text-slate-400 leading-relaxed"
+              className="text-lg text-white/40 leading-relaxed"
               textAlign="left"
               delay={0.2}
             />
           </div>
 
           <div className="flex flex-wrap gap-3">
-             <div className="px-4 py-2 rounded-lg bg-slate-900/50 border border-white/5 text-xs font-mono text-slate-400">
+             <div className="px-4 py-2 rounded-lg bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-white/40">
                # {config.id}
              </div>
-             <div className="px-4 py-2 rounded-lg bg-slate-900/50 border border-white/5 text-xs font-mono text-slate-400">
+             <div className="px-4 py-2 rounded-lg bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-white/40">
                {config.highlight}
              </div>
           </div>
@@ -121,19 +106,19 @@ export default function TechSection({ config, index }: TechSectionProps) {
         >
           <div className="grid gap-6">
             <TiltedCard 
-              className="min-h-[280px] p-8 flex flex-col justify-end bg-slate-900/80"
+              className="min-h-[280px] p-8 flex flex-col justify-end bg-white/[0.03] border border-white/[0.08]"
               containerClassName="w-full h-full"
               glareOpacity={0.1}
               tiltScale={1.02}
             >
-               <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
+               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
                
                <div className="relative z-10">
-                 <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                 <div className="w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center mb-6">
                     <Icon className="w-6 h-6 text-white/80" />
                  </div>
                  <h3 className="text-2xl font-semibold text-white mb-2">Interactive Lab</h3>
-                 <p className="text-sm text-slate-400 leading-relaxed">
+                 <p className="text-sm text-white/40 leading-relaxed">
                    {config.highlight}. Experience real-time simulations powered by next-gen frameworks.
                  </p>
                </div>

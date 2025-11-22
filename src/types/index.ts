@@ -1,12 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 
 export type TechCategoryId =
-  | "ai"
-  | "data"
-  | "robotics"
-  | "mobile"
-  | "web"
-  | "emerging";
+  | "frontend"
+  | "backend"
+  | "cloud"
+  | "design";
 
 export interface TechSectionConfig {
   id: TechCategoryId;

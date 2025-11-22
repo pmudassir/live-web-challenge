@@ -2,9 +2,16 @@
 
 import { useMemo } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-
 import { cn } from "@/lib/utils";
-import AnimatedCard from "./AnimatedCard";
+
+import { BentoGrid, BentoGridItem } from "./BentoGrid";
+import { PromptingIsAllYouNeed } from "@/components/ui/animated-hero-section";
+import {
+  Type,
+  MousePointer2,
+  LayoutGrid,
+  Sparkles
+} from "lucide-react";
 
 function GlitchTitle({ text }: { text: string }) {
   const layers = useMemo(() => ["cyan", "pink"], []);
@@ -85,8 +92,8 @@ function ReactiveGrid() {
       {cells.map((_, index) => (
         <motion.div
           key={index}
-          className="aspect-square rounded-md bg-slate-800/50 border border-white/5"
-          whileHover={{ scale: 1.1, backgroundColor: "rgba(56,189,248,0.8)", borderColor: "transparent" }}
+          className="aspect-square rounded-md bg-white/[0.03] border border-white/[0.08]"
+          whileHover={{ scale: 1.1, backgroundColor: "rgba(99,102,241,0.8)", borderColor: "transparent" }}
           whileTap={{ scale: 0.9 }}
           initial={{ opacity: 0, scale: 0.6 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -103,63 +110,67 @@ function ReactiveGrid() {
 }
 
 export default function Playground() {
+  const items = [
+    {
+      title: "Glitch Typography",
+      description: "Layer text, color, and motion to turn simple headlines into mini animations that feel alive.",
+      header: <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-white/[0.02] items-center justify-center border border-white/[0.08]"><GlitchTitle text="Glitch Effect" /></div>,
+      icon: <Type className="h-4 w-4 text-white/60" />,
+      className: "md:col-span-1",
+    },
+    {
+      title: "Magnetic Physics",
+      description: "Buttons that subtly chase your cursor feel playful and responsive.",
+      header: <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-white/[0.02] items-center justify-center border border-white/[0.08]"><MagneticButton /></div>,
+      icon: <MousePointer2 className="h-4 w-4 text-white/60" />,
+      className: "md:col-span-1",
+    },
+    {
+      title: "Reactive Grids",
+      description: "Tiny interactions add up. Even a simple grid can feel like a responsive instrument.",
+      header: <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-white/[0.02] items-center justify-center border border-white/[0.08] py-4"><ReactiveGrid /></div>,
+      icon: <LayoutGrid className="h-4 w-4 text-white/60" />,
+      className: "md:col-span-1",
+    },
+    {
+      title: "Prompting Is All You Need",
+      description: "A fully interactive Pong game. Sometimes the best way to move forward is to look back.",
+      header: <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-white/[0.02] border border-white/[0.08] overflow-hidden relative"><PromptingIsAllYouNeed /></div>,
+      icon: <Sparkles className="h-4 w-4 text-white/60" />,
+      className: "md:col-span-3",
+    },
+  ];
+
   return (
     <section id="playground" className="relative py-32">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-slate-800/0 via-slate-500/40 to-slate-800/0" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/[0.08]" />
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 sm:px-8 lg:px-12">
         <div className="max-w-2xl space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-cyan-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-indigo-300">
              Interactive Lab
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
             Micro-Interactions
           </h2>
-          <p className="text-lg text-slate-400 leading-relaxed">
+          <p className="text-lg text-white/40 leading-relaxed">
             These micro-experiments show how far you can push motion, gradients, and
             interactionsall using the same tools powering this page.
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatedCard spotlightColor="rgba(236, 72, 153, 0.4)">
-            <div className="flex flex-col h-full justify-between gap-8">
-               <div>
-                 <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Typography</p>
-                 <GlitchTitle text="Glitch Effect" />
-               </div>
-               <p className="text-sm text-slate-400 leading-relaxed">
-                 Layer text, color, and motion to turn simple headlines into mini animations that feel alive.
-               </p>
-            </div>
-          </AnimatedCard>
-
-          <AnimatedCard spotlightColor="rgba(56, 189, 248, 0.4)">
-            <div className="flex flex-col h-full justify-between gap-8">
-               <div>
-                 <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Physics</p>
-                 <p className="text-xl font-bold text-white mb-4">Magnetic Cursor</p>
-                 <MagneticButton />
-               </div>
-               <p className="text-sm text-slate-400 leading-relaxed">
-                 Buttons that subtly chase your cursor feel playful and responsive.
-               </p>
-            </div>
-          </AnimatedCard>
-
-          <AnimatedCard spotlightColor="rgba(16, 185, 129, 0.4)" className="sm:col-span-2 lg:col-span-1">
-            <div className="flex flex-col h-full justify-between gap-8">
-               <div>
-                 <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Layout</p>
-                 <p className="text-xl font-bold text-white mb-4">Reactive Grid</p>
-                 <ReactiveGrid />
-               </div>
-               <p className="text-sm text-slate-400 leading-relaxed">
-                 Tiny interactions add up. Even a simple grid can feel like a responsive instrument.
-               </p>
-            </div>
-          </AnimatedCard>
-        </div>
+        <BentoGrid className="max-w-4xl mx-0">
+          {items.map((item, i) => (
+            <BentoGridItem
+              key={i}
+              title={item.title}
+              description={item.description}
+              header={item.header}
+              icon={item.icon}
+              className={item.className}
+            />
+          ))}
+        </BentoGrid>
       </div>
     </section>
   );

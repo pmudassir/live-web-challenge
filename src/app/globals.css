@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #030303;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -12,20 +12,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.2), transparent 55%),
-    radial-gradient(circle at top right, rgba(129, 140, 248, 0.18), transparent 55%),
-    #030014;
+  background: #030303;
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
@@ -35,22 +24,22 @@ body {
 
 /* Custom Scrollbar for Premium Feel */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #030014;
+  background: #030303;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 100vh;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Premium Selection */
 ::selection {
-  background: rgba(56, 189, 248, 0.25);
+  background: rgba(244, 63, 94, 0.25); /* Rose-500 low opacity */
   color: #fff;
 }
 

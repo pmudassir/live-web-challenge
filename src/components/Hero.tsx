@@ -7,12 +7,13 @@ import AnimatedWords from "./AnimatedWords";
 import AnimatedCard from "./AnimatedCard";
 import StarField from "./StarField";
 import DecryptedText from "./DecryptedText";
+import MovingBorderButton from "./MovingBorderButton";
 
 const phrases = [
-  "AI & Machine Learning",
-  "Data Science & Analytics",
-  "Robotics & Automation",
-  "Future of Mobile & Web",
+  "Frontend Developer",
+  "React Native Developer",
+  "Full Stack Engineer",
+  "UI/UX Enthusiast",
 ];
 
 export default function Hero() {
@@ -74,7 +75,7 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
-            <DecryptedText text="Future Tech Explorer" speed={60} />
+            <DecryptedText text="Mudassir Mohammed" speed={60} />
           </motion.div>
 
           <motion.h1
@@ -83,9 +84,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-slate-400/80">Discover what&apos;s</span>
+            <span className="block text-slate-400/80">Crafting digital</span>
             <span className="mt-2 block bg-linear-to-r from-white via-cyan-100 to-slate-400 bg-clip-text text-transparent">
-              <AnimatedWords text="possible." />
+              <AnimatedWords text="masterpieces." />
             </span>
           </motion.h1>
 
@@ -96,13 +97,13 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
              <p className="text-lg leading-relaxed text-slate-400">
-               A cinematic journey through AI, robotics, and data.
-               Explore mind-bending experiences built to spark your curiosity.
+               Lead Frontend Developer specializing in React, Next.js, and modern web technologies. 
+               Building scalable, high-performance applications with a focus on exceptional user experience.
              </p>
 
              <div className="flex items-center gap-2 text-sm text-cyan-100/90">
                <span className="text-[0.7rem] uppercase tracking-[0.22em] text-cyan-300/90">
-                 Loading
+                 Role
                </span>
                <span className="h-px w-8 bg-cyan-400/70" />
                <span className="inline-flex items-center text-sm font-medium text-cyan-50">
@@ -118,17 +119,21 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <button className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-white px-8 font-medium tracking-wide text-slate-950 transition-transform duration-300 hover:scale-[1.02] active:scale-95">
-               <span className="relative z-10 flex items-center gap-2">
-                 <DecryptedText text="Start Exploring" speed={80} animateOn="hover" className="text-slate-950 font-bold" />
-                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <MovingBorderButton
+              borderRadius="1.75rem"
+              className="bg-white text-slate-950 font-bold border-none"
+              containerClassName="h-14 w-auto"
+              borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
+            >
+               <span className="flex items-center gap-2 px-6">
+                 <DecryptedText text="View Projects" speed={80} animateOn="hover" className="text-slate-950" />
+                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                </span>
-               <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-cyan-200 via-white to-white opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            </button>
+            </MovingBorderButton>
 
             <button className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/10 bg-slate-900/40 px-8 font-medium text-slate-200 backdrop-blur-xl transition-colors hover:bg-white/5">
               <Bot className="h-4 w-4 text-cyan-300" />
-              How it works
+              Contact Me
             </button>
           </motion.div>
         </div>

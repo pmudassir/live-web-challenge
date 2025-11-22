@@ -100,6 +100,24 @@ export default function TopNav() {
             </button>
           );
         })}
+        
+        <div className="w-px h-4 bg-white/10 mx-1" />
+        
+        <a
+          href="/horizon"
+          className="relative rounded-full px-3 py-1 font-medium outline-none transition-colors text-cyan-300 hover:text-cyan-100"
+        >
+          Horizon 3D
+        </a>
+        
+        <div className="w-px h-4 bg-white/10 mx-1" />
+
+        <a
+          href="/pong"
+          className="relative rounded-full px-3 py-1 font-medium outline-none transition-colors text-pink-300 hover:text-pink-100"
+        >
+          Pong
+        </a>
       </div>
     </motion.nav>
   );
